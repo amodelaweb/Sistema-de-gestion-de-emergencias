@@ -40,6 +40,9 @@ c = Client(nombre='Juan Pablo',
            ip_broker='192.168.0.113',
            port_broker=5001
 )
+<<<<<<< HEAD:Cliente/Modelo/Client.py
 
 c.subscribe()
 """
+=======
+>>>>>>> devMessage:Cliente/Modelo/client.py
