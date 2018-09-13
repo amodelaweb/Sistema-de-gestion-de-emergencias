@@ -19,4 +19,4 @@ class Publisher:
 
 news = Noticia(body='Test Body', author='El Tiempo')
 p = Publisher(ip='192.168.0.112', port=5001, brokerIp='192.168.0.113', brokerPort=5001)
-p.send_news(news)
+p.send_news(news) 
