@@ -1,8 +1,8 @@
 import sys
 import os
 
-from ..Noticia import Noticia
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
+from Noticia import Noticia
 
 class Publisher:
     """This class is goning to send news to the broker."""
