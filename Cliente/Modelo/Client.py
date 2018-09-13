@@ -31,18 +31,3 @@ class Client(json.JSONEncoder):
         msg = Message(MessageType.SUBSCRIBER, json.loads(self.to_json()))
         conn = Connection()
         conn.send_data(port=self.port_broker,  ip=self.ip_broker, data=msg.to_json())
-"""
-c = Client(nombre='Juan Pablo',
-           residencia='Calle 61 No. 4-66',
-           profesion='Ingeniero',
-           comp_familiar=[1,2,3],
-           temas=[NewsCategory.INUNDACIONES, NewsCategory.INCENDIOS],
-           ip_broker='192.168.0.113',
-           port_broker=5001
-)
-<<<<<<< HEAD:Cliente/Modelo/Client.py
-
-c.subscribe()
-"""
-=======
->>>>>>> devMessage:Cliente/Modelo/client.py

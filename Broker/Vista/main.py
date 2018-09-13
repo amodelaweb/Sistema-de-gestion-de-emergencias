@@ -6,13 +6,8 @@ sys.path.insert(1, os.path.join(sys.path[0], '..'))
 from Modelo.Broker import Broker
 from Modelo.Cliente import Cliente
 from Modelo.Publisher import Publisher
-<<<<<<< HEAD
 sys.path.insert(1, os.path.join(sys.path[0], '../..'))
 from shared.Message import MessageType
-
-=======
-from shared.Message import MessageType
->>>>>>> devMessage
 
 def main():
     broker = Broker("192.168.0.113", 5001, True, "192.168.0.255")
@@ -42,14 +37,8 @@ def main():
                                     ))
 
         elif (res.get('messageType') == MessageType.NEWS):
-<<<<<<< HEAD
-            print("ok")
             t = threading.Thread(target=broker.broadcast_to_clients ,   args = (res,))
             t.start()
-=======
-            pass
->>>>>>> devMessage
-
     broker.conection.close_socket()
 
 main()
