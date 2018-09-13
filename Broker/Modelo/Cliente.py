@@ -14,4 +14,3 @@ class Cliente():
 
     # METODOS
     def suscribirse():
-        
