@@ -27,7 +27,7 @@ class Conection():
         mensaje = mensaje.encode('utf-8')
         try:
             self.sock.sendto(mensaje,(ip, port))
-            return true
+            return True
         except Exception as e:
             print(e)
-            return false
+            return False
