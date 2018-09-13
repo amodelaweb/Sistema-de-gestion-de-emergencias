@@ -1,10 +1,9 @@
 import socket
 import json
 
-class Conection():
+class Connection():
     # CONSTRUCTOR
-    def __init__(self, ip, port):
-        super(Conection, self).__init__()
+    def __init__(self, ip='127.0.0.1', port=5001):
         self.ip = ip
         self.port = port
         self.sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
