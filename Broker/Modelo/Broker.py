@@ -21,7 +21,7 @@ class Broker(object):
     def __repr__(self):
         res = " ip " + self.ip + "port" + self.port
         return res
-        
+
     def add_client(self, cliente):
         print(cliente)
         self.suscribers.append(cliente)
@@ -37,5 +37,17 @@ class Broker(object):
     def send_info_broadcast(self , data):
         self.conection.send_data(self.port,self.broadcast,data)
 
-    def broadcast_to_clients(self, arg):
-        pass
+    def broadcast_to_clients(self, data):
+
+        for client in self.suscribers :
+            for element in client.temas :
+                print(element)
+                if element in data.get('body').get('temas'):
+                    print("-----------------")
+                    print(client.puerto , " - " , client.ip)
+                    print("-----------------")
+                    self.conection.send_data(client.puerto, client.ip , data)
+                    #break
+                #Fi
+            #Rof
+        #Rof

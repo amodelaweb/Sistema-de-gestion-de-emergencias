@@ -31,7 +31,7 @@ class Client(json.JSONEncoder):
         msg = Message(MessageType.SUBSCRIBER, json.loads(self.to_json()))
         conn = Connection()
         conn.send_data(port=self.port_broker,  ip=self.ip_broker, data=msg.to_json())
-
+"""
 c = Client(nombre='Juan Pablo',
            residencia='Calle 61 No. 4-66',
            profesion='Ingeniero',
@@ -42,3 +42,4 @@ c = Client(nombre='Juan Pablo',
 )
 
 c.subscribe()
+"""
