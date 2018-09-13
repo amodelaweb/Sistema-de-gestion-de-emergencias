@@ -32,7 +32,7 @@ class Publisher:
 
 news = Noticia(body='Test Body',
                 author='El Tiempo',
-                temas=[NewsCategory.INCENDIOS])
+                temas=[NewsCategory.INCENDIOS, NewsCategory.DERRUMBES])
 p = Publisher(ip_broker='192.168.0.113', port_broker=5001, nombre='El Tiempo')
 p.subscribe()
 p.send_news(news)
