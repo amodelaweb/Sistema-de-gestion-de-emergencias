@@ -1,7 +1,7 @@
 class Cliente():
 
     # CONSTRUCTOR
-    def __init__(self, ip, puerto, nombre, residencia, profesion, comp_familiar, temas, ip_broker, port_broker):
+    def __init__(self, ip, puerto, nombre, residencia, profesion, comp_familiar, temas):
         super(Cliente, self).__init__()
         self.ip = ip
         self.puerto = puerto
@@ -9,8 +9,7 @@ class Cliente():
         self.residencia = residencia
         self.comp_familiar = comp_familiar
         self.temas = temas
-        self.ip_broker = ip_broker
-        self.port_broker = port_broker
 
-    # METODOS
-    def suscribirse():
+    def __repr__(self):
+        res = "* Nombre " + self.nombre + " *residencia " + self.residencia + " *comp_familiar " + str(self.comp_familiar) + " *temas " + str(self.temas) + " ip " + self.ip
+        return res
