@@ -7,3 +7,4 @@ class NewsCategory(JSONEncoder):
 
     def default(self):
         return self.__dict__
+ 

@@ -2,7 +2,7 @@ import json
 import datetime
 
 from enum import Enum
-
+ 
 class MessageType(json.JSONEncoder):
     PUBLISHER = 1
     SUBSCRIBER = 2

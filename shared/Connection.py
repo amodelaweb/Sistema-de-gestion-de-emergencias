@@ -1,6 +1,6 @@
 import socket
 import json
-
+ 
 class Connection():
     # CONSTRUCTOR
     def __init__(self, ip='127.0.0.1', port=5001):
