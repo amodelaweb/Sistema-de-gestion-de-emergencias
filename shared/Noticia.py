@@ -4,7 +4,7 @@ import datetime
 class Noticia:
     """A class that represents a news, this is the message that will be sent
        by the source and received by the client."""
-    def __init__(self, body='', author='', category=0, timestamp=datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"), json=None):
+    def __init__(self, body='', author='', category=[], timestamp=datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"), json=None):
         self.body = body
         self.author = author
         self.timestamp = timestamp
@@ -21,4 +21,3 @@ class Noticia:
 
     def to_json(self):
         return json.dumps(self.__dict__)
- 

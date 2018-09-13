@@ -25,10 +25,11 @@ class Conection():
         mensaje = str(data).replace("'",'"')
         mensaje = mensaje.encode('utf-8')
         try:
-            self.sock.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
-            self.sock.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
+            print("Voy a enviar")
+            print(mensaje)
+            print("...................")
+            print("IP " + ip + " . port . " + str(port) )
             self.sock.sendto(mensaje,(ip, port))
-            self.sock.setsockopt(SOL_SOCKET, SO_BROADCAST, 0)
             return True
         except Exception as e:
             print(e)
