@@ -1,11 +1,8 @@
-from ... import Noticia
-
 class Publisher:
-    """This class is goning to send news to the broker."""
-    def __init__(self, ip, port, broker):
+    def __init__(self, ip, nombre):
         self.ip = ip
-        self.port = port
-        self.broker = broker
+        self.nombre = nombre
 
-    def send_news(self):
-        news = Noticia(body='Test Body', author='El Tiempo')
+    def __repr__(self):
+        res = "* Nombre " + self.nombre + " ip " + self.ip
+        return res

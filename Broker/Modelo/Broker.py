@@ -11,15 +11,28 @@ class Broker(object):
         self.port = port
         self.suscribers = []
         self.publishers = []
+        self.Brokers = []
+        self.temas = []
+        self.brokers = []
         self.broadcast = broadcast
         self.is_server = is_server
         self.conection = Conection(self.ip, self.port)
 
+    def __repr__(self):
+        res = " ip " + self.ip + "port" + self.port
+        return res
+        
     def add_client(self, cliente):
-        self.suscribers.append(client)
+        print(cliente)
+        self.suscribers.append(cliente)
 
     def add_publisher(self, publisher):
+        print(publisher)
         self.publishers.append(publisher)
+
+    def add_broker(self, broker):
+        print(broker)
+        self.brokers.append(broker)
 
     def send_info_broadcast(self , data):
         self.conection.send_data(self.port,self.broadcast,data)
