@@ -11,5 +11,4 @@ def main():
         print (res)
 
     broker.conection.close_socket()
-
 main()

@@ -31,4 +31,3 @@ class Conection():
         except Exception as e:
             print(e)
             return false
-    
