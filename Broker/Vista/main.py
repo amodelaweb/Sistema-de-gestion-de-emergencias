@@ -10,11 +10,15 @@ sys.path.insert(1, os.path.join(sys.path[0], '../..'))
 from shared.Message import MessageType
 
 def main():
-    broker = Broker("192.168.0.113", 5001, True, "192.168.0.255")
+    if (len(sys.argv) != 4):
+        print (sys.argv[0] + " [ServerIp] [ServerPort] [Broadcast]")
+        sys.exit(1)
+
+    broker = Broker(sys.argv[1], sys.argv[2], True, sys.argv[3])
     broker.conection.init_server()
+    print("Broker Iniciado ! ")
     while True:
         res,addr = broker.conection.listen(1024)
-
         if (res.get('messageType') == MessageType.SUBSCRIBER):
             broker.add_client(Cliente( addr[0],
                                        res.get('body').get('puerto') ,
@@ -24,21 +28,25 @@ def main():
                                        res.get('body').get('comp_familiar'),
                                        res.get('body').get('temas')
                                       )  )
-
+            hilo_difusion =  threading.Thread(target=broker.boadcast_brokers ,   args = (res,))
+            hilo_difusion.start()
         elif (res.get('messageType') == MessageType.PUBLISHER):
             broker.add_publisher(Publisher(addr[0],
                                            res.get('body').get('nombre')
                                             ))
+            hilo_difusion =  threading.Thread(target=broker.boadcast_brokers ,   args = (res,))
+            hilo_difusion.start()
         elif (res.get('messageType') == MessageType.BROKER):
             broker.add_broker(Broker(res.get('body').get('ip'),
                                      res.get('body').get('puerto'),
                                      res.get('body').get('flag'),
                                      res.get('body').get('broadcast')
                                     ))
-
+            hilo_difusion =  threading.Thread(target=broker.boadcast_brokers ,   args = (res,))
+            hilo_difusion.start()
         elif (res.get('messageType') == MessageType.NEWS):
-            t = threading.Thread(target=broker.broadcast_to_clients ,   args = (res,))
-            t.start()
+            hilo_match = threading.Thread(target=broker.broadcast_to_clients ,   args = (res,))
+            hilo_match.start()
     broker.conection.close_socket()
 
 main()

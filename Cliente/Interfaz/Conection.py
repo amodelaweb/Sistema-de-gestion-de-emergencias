@@ -10,7 +10,7 @@ class Conection():
         self.sock = socket(AF_INET,SOCK_DGRAM)
     # METODOS DEL SERVIDOR
     def init_server(self):
-        self.sock.bind((self.ip, self.port))
+        self.sock.bind(     (self.ip, self.port))
 
     def close_socket(self):
         self.sock.close()
@@ -26,7 +26,6 @@ class Conection():
         mensaje = mensaje.encode('utf-8')
         try:
             self.sock.sendto(mensaje,(ip, port))
-
             return True
         except Exception as e:
             print(e)

@@ -11,7 +11,6 @@ class Broker(object):
         self.port = port
         self.suscribers = []
         self.publishers = []
-        self.Brokers = []
         self.temas = []
         self.brokers = []
         self.broadcast = broadcast
@@ -43,11 +42,12 @@ class Broker(object):
             for element in client.temas :
                 print(element)
                 if element in data.get('body').get('temas'):
-                    print("-----------------")
-                    print(client.puerto , " - " , client.ip)
-                    print("-----------------")
                     self.conection.send_data(client.puerto, client.ip , data)
                     #break
                 #Fi
             #Rof
+        #Rof
+    def boadcast_brokers(self, data):
+        for broker in self.brokers :
+            self.conection.send_data(broker.port, broker.ip , data)
         #Rof

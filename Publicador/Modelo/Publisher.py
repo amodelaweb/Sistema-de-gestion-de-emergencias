@@ -1,6 +1,8 @@
 import sys
 import os
 import json
+import datetime
+import threading
 
 sys.path.insert(1, os.path.join(sys.path[0], '../..'))
 from shared.Noticia import Noticia
@@ -16,6 +18,7 @@ class Publisher:
         self.port_broker = port_broker
         self.ip_broker = ip_broker
         self.nombre = nombre
+        self.cola_eventos = []
 
     def send_news(self, news):
         msg = Message(MessageType.NEWS, json.loads(news.to_json()))
@@ -30,9 +33,32 @@ class Publisher:
         conn = Connection()
         conn.send_data(port=self.port_broker,  ip=self.ip_broker, data=msg.to_json())
 
+    def read_file (self, file_name):
+        jsonOb = json.loads(open(file_name).read())
+        array = jsonOb.get('mensajes')
+        orderkey = lambda x: x.get('timestamp')
+        self.cola_eventos.extend(array)
+        self.cola_eventos.sort(key=orderkey)
+
+    def send_packages_at_time(self):
+        print(len(self.cola_eventos))
+        while(self.cola_eventos):
+            time = datetime.datetime.strptime(self.cola_eventos[0].get('timestamp'), "%Y-%m-%d %H:%M:%S")
+            result = time.timestamp() - datetime.datetime.now().timestamp()
+            if(result <= 0):
+                #print("In array " , time.strftime("%Y-%m-%d %H:%M:%S") , " In Now " ,datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") , " result " , result )
+                print("Envie el paquete")
+                self.cola_eventos.pop(0)
+
 news = Noticia(body='Test Body',
                 author='El Tiempo',
                 temas=[NewsCategory.INCENDIOS, NewsCategory.DERRUMBES])
 p = Publisher(ip_broker='192.168.0.113', port_broker=5001, nombre='El Tiempo')
 p.subscribe()
 p.send_news(news)
+p.read_file('file.json')
+#p.send_packages_at_time()
+hilo_match = threading.Thread(target=p.send_packages_at_time )
+hilo_match.start()
+while True:
+    pass
