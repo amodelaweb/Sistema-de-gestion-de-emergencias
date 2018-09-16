@@ -10,7 +10,7 @@ class Conection():
         self.sock = socket(AF_INET,SOCK_DGRAM)
     # METODOS DEL SERVIDOR
     def init_server(self):
-        self.sock.bind(("", self.port))
+        self.sock.bind(("", int(self.port)))
 
     def close_socket(self):
         self.sock.close()

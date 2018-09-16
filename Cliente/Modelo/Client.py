@@ -14,7 +14,7 @@ class Client(json.JSONEncoder):
     def default(self):
         return self.__dict__
 
-    def __init__(self, nombre, residencia, profesion, ip_broker, port_broker, ip='127.0.0.1', puerto=5001, comp_familiar=[], temas = []):
+    def __init__(self, nombre, residencia, profesion, ip_broker, port_broker, ip='127.0.0.1', puerto=5002, comp_familiar=[], temas = []):
         self.ip = ip
         self.puerto = puerto
         self.nombre = nombre
@@ -28,6 +28,6 @@ class Client(json.JSONEncoder):
         return json.dumps(self.__dict__)
 
     def subscribe(self):
+        conection = Connection (self.ip , self.puerto)
         msg = Message(MessageType.SUBSCRIBER, json.loads(self.to_json()))
-        conn = Connection()
-        conn.send_data(port=self.port_broker,  ip=self.ip_broker, data=msg.to_json())
+        conection.send_data(port=self.port_broker,  ip=self.ip_broker, data=msg.to_json())

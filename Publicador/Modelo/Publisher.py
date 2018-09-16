@@ -5,8 +5,8 @@ import datetime
 import threading
 
 sys.path.insert(1, os.path.join(sys.path[0], '../..'))
-from shared.Noticia import Noticia
 from shared.Message import Message, MessageType
+from shared.Noticia import Noticia
 from shared.NewsCategory import NewsCategory
 from shared.Connection import Connection
 
@@ -22,7 +22,7 @@ class Publisher:
 
     def send_news(self, news):
         msg = Message(MessageType.NEWS, json.loads(news.to_json()))
-        conn = Connection();
+        conn = Connection(self.ip, self.port);
         conn.send_data(port=self.port_broker,  ip=self.ip_broker, data=msg.to_json())
 
     def to_json(self):
@@ -30,7 +30,7 @@ class Publisher:
 
     def subscribe(self):
         msg = Message(MessageType.PUBLISHER, json.loads(self.to_json()))
-        conn = Connection()
+        conn = Connection(self.ip, self.port)
         conn.send_data(port=self.port_broker,  ip=self.ip_broker, data=msg.to_json())
 
     def read_file (self, file_name):
@@ -48,17 +48,20 @@ class Publisher:
             if(result <= 0):
                 #print("In array " , time.strftime("%Y-%m-%d %H:%M:%S") , " In Now " ,datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") , " result " , result )
                 print("Envie el paquete")
+                self.send_news(Noticia(body=self.cola_eventos[0].get('body'),
+                                       author=self.cola_eventos[0].get('author'),
+                                       temas=self.cola_eventos[0].get('temas')))
                 self.cola_eventos.pop(0)
 
 news = Noticia(body='Test Body',
                 author='El Tiempo',
                 temas=[NewsCategory.INCENDIOS, NewsCategory.DERRUMBES])
-p = Publisher(ip_broker='192.168.0.113', port_broker=5001, nombre='El Tiempo')
+p = Publisher(ip_broker='localhost', port_broker=5001, nombre='El Tiempo')
 p.subscribe()
 p.send_news(news)
 p.read_file('file.json')
 #p.send_packages_at_time()
-hilo_match = threading.Thread(target=p.send_packages_at_time )
-hilo_match.start()
-while True:
-    pass
+#hilo_match = threading.Thread(target=p.send_packages_at_time )
+#hilo_match.start()
+#while True:
+#    pass
