@@ -35,10 +35,14 @@ class Publisher:
 
     def read_file (self, file_name):
         jsonOb = json.loads(open(file_name).read())
+        print(jsonOb)
         array = jsonOb.get('mensajes')
         orderkey = lambda x: x.get('timestamp')
         self.cola_eventos.extend(array)
         self.cola_eventos.sort(key=orderkey)
+        #self.send_packages_at_time()
+        #hilo_match = threading.Thread(target=self.send_packages_at_time )
+        #hilo_match.start()
 
     def send_packages_at_time(self):
         print(len(self.cola_eventos))
@@ -53,13 +57,15 @@ class Publisher:
                                        temas=self.cola_eventos[0].get('temas')))
                 self.cola_eventos.pop(0)
 
-news = Noticia(body='Test Body',
-                author='El Tiempo',
-                temas=[NewsCategory.INCENDIOS, NewsCategory.DERRUMBES])
-p = Publisher(ip_broker='localhost', port_broker=5001, nombre='El Tiempo')
-p.subscribe()
-p.send_news(news)
-p.read_file('file.json')
+#news = Noticia(body='Test Body',
+                #author='El Tiempo',
+                #temas=[NewsCategory.INCENDIOS, NewsCategory.DERRUMBES])
+#p = Publisher(ip_broker='192.168.0.27', port_broker=5001, nombre='El Tiempo')
+#p.subscribe()
+#p.send_news(news)
+#script_dir = os.path.dirname(__file__)
+#rel_path = 'file.json'
+#p.read_file(os.path.join(script_dir, rel_path))
 #p.send_packages_at_time()
 #hilo_match = threading.Thread(target=p.send_packages_at_time )
 #hilo_match.start()
