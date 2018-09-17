@@ -5,10 +5,19 @@
 # Created by: PyQt5 UI code generator 5.11.2
 #
 # WARNING! All changes made in this file will be lost!
-
+import sys
+import os
+import socket
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+sys.path.insert(1, os.path.join(sys.path[0], '../..'))
+from Cliente.Vista.ClientMainViewController import ClientMainViewController
+
 class Ui_ClientMainWindow(object):
+
+    def __init__(self):
+        self.controller = ClientMainViewController(self)
+
     def setupUi(self, ClientMainWindow):
         ClientMainWindow.setObjectName("ClientMainWindow")
         ClientMainWindow.resize(800, 600)
@@ -41,7 +50,7 @@ class Ui_ClientMainWindow(object):
         self.residenceLineEdit.setObjectName("residenceLineEdit")
         self.myIpLineEdit = QtWidgets.QLineEdit(self.centralwidget)
         self.myIpLineEdit.setGeometry(QtCore.QRect(100, 100, 291, 21))
-        self.myIpLineEdit.setText("")
+        self.myIpLineEdit.setText(socket.gethostbyname(socket.gethostname()))
         self.myIpLineEdit.setObjectName("myIpLineEdit")
         self.myIpLabel = QtWidgets.QLabel(self.centralwidget)
         self.myIpLabel.setGeometry(QtCore.QRect(30, 100, 59, 16))
@@ -96,6 +105,8 @@ class Ui_ClientMainWindow(object):
         self.retranslateUi(ClientMainWindow)
         QtCore.QMetaObject.connectSlotsByName(ClientMainWindow)
 
+        self.makeButtonsConnections()
+
     def retranslateUi(self, ClientMainWindow):
         _translate = QtCore.QCoreApplication.translate
         ClientMainWindow.setWindowTitle(_translate("ClientMainWindow", "MainWindow"))
@@ -113,6 +124,32 @@ class Ui_ClientMainWindow(object):
         self.derrumbesCheckBox.setText(_translate("ClientMainWindow", "Derrumbes"))
         self.subscribePushButton.setText(_translate("ClientMainWindow", "Subscribe"))
         self.newsLabel.setText(_translate("ClientMainWindow", "Noticias"))
+
+    def getBrokerData(self):
+        broker_data = {
+            'ip_broker': self.brokerIpLineEdit.text(),
+            'port_broker': int(self.brokerPortSpinBox.value())
+        }
+        return  broker_data
+
+    def getUserData(self):
+        composicion_familiar = self.familyCompLineEdit.text().split(',')
+        temas = [self.inundacionesCheckBox.isChecked(),
+                 self.vendabalesCheckBox.isChecked(),
+                 self.incendiosCheckBox.isChecked(),
+                 self.derrumbesCheckBox.isChecked()]
+        user_data = {
+            'nombre': self.nameLineEdit.text(),
+            'residencia': self.residenceLineEdit.text(),
+            'ip': self.myIpLineEdit.text(),
+            'puerto': int(self.myPortSpinBox.value()),
+            'comp_familiar': composicion_familiar,
+            'temas': temas
+        }
+        return  user_data
+
+    def makeButtonsConnections(self):
+        self.subscribePushButton.clicked.connect(self.controller.subscribePushButtonHandler)
 
 
 if __name__ == "__main__":

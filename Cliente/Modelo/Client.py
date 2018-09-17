@@ -14,7 +14,7 @@ class Client(json.JSONEncoder):
     def default(self):
         return self.__dict__
 
-    def __init__(self, nombre, residencia, profesion, ip_broker, port_broker, ip='127.0.0.1', puerto=5002, comp_familiar=[], temas = []):
+    def __init__(self, nombre, residencia, ip_broker, port_broker, ip='127.0.0.1', puerto=5002, comp_familiar=[], temas = []):
         self.ip = ip
         self.puerto = puerto
         self.nombre = nombre
