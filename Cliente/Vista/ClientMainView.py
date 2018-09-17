@@ -8,15 +8,19 @@
 import sys
 import os
 import socket
+import time
+import random
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 sys.path.insert(1, os.path.join(sys.path[0], '../..'))
 from Cliente.Vista.ClientMainViewController import ClientMainViewController
+from shared.Connection import Connection
 
 class Ui_ClientMainWindow(object):
 
     def __init__(self):
         self.controller = ClientMainViewController(self)
+        self.randPort = random.randint(5001,5999)
 
     def setupUi(self, ClientMainWindow):
         ClientMainWindow.setObjectName("ClientMainWindow")
@@ -62,6 +66,7 @@ class Ui_ClientMainWindow(object):
         self.myPortSpinBox.setGeometry(QtCore.QRect(490, 100, 301, 22))
         self.myPortSpinBox.setMaximum(99999)
         self.myPortSpinBox.setObjectName("myPortSpinBox")
+        self.myPortSpinBox.setValue(self.randPort)
         self.familyCompLabel = QtWidgets.QLabel(self.centralwidget)
         self.familyCompLabel.setGeometry(QtCore.QRect(30, 130, 291, 16))
         self.familyCompLabel.setObjectName("familyCompLabel")
@@ -105,7 +110,20 @@ class Ui_ClientMainWindow(object):
         self.retranslateUi(ClientMainWindow)
         QtCore.QMetaObject.connectSlotsByName(ClientMainWindow)
 
+        # Connect buttons
         self.makeButtonsConnections()
+
+        # Initialize Thread
+        self.getNewsThread = GetNewsThread(self.randPort)
+        self.getNewsThread.start()
+        self.getNewsThread.signal.connect(self.appendMessage)
+
+
+
+    def appendMessage(self, newMessage):
+        print(newMessage)
+        self.newsFeedTextEdit.append(str(newMessage))
+
 
     def retranslateUi(self, ClientMainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -151,6 +169,19 @@ class Ui_ClientMainWindow(object):
     def makeButtonsConnections(self):
         self.subscribePushButton.clicked.connect(self.controller.subscribePushButtonHandler)
 
+class GetNewsThread(QtCore.QThread):
+    signal = QtCore.pyqtSignal('PyQt_PyObject')
+    def __init__(self, listening_port, parent=None):
+        QtCore.QThread.__init__(self, parent)
+        self.conn = Connection('127.0.0.1', listening_port)
+        self.BUFFER = 1024
+    def run(self):
+        i = 0
+        while True:
+            #msg = self.conn.listen(self.BUFFER)
+            self.signal.emit(i)
+            i+=1
+            time.sleep(5)
 
 if __name__ == "__main__":
     import sys
