@@ -1,10 +1,10 @@
 from socket import *
 import json
 
-class Conection():
+class Connection():
     # CONSTRUCTOR
     def __init__(self, ip, port):
-        super(Conection, self).__init__()
+        super(Connection, self).__init__()
         self.ip = ip
         self.port = port
         self.sock = socket(AF_INET,SOCK_DGRAM)
