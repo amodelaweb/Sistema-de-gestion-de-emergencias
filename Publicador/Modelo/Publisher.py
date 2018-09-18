@@ -54,7 +54,8 @@ class Publisher:
                 print("Envie el paquete")
                 self.send_news(Noticia(body=self.cola_eventos[0].get('body'),
                                        author=self.cola_eventos[0].get('author'),
-                                       temas=self.cola_eventos[0].get('temas')))
+                                       temas=self.cola_eventos[0].get('temas'),
+                                       timestamp=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
                 self.cola_eventos.pop(0)
 
 #news = Noticia(body='Test Body',
