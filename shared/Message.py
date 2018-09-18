@@ -8,6 +8,7 @@ class MessageType(json.JSONEncoder):
     SUBSCRIBER = 2
     BROKER = 3
     NEWS = 4
+    GET_BROKERS = 5
 
     def default(self):
         return self.__dict__

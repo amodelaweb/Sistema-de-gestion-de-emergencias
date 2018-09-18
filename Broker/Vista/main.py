@@ -20,11 +20,12 @@ def main():
 
     if (len(sys.argv) == 7):
         broker.subscribe(sys.argv[5] , sys.argv[6])
+        broker.balanceador_ip = sys.argv[5]
 
     while True:
         res,addr = broker.conection.listen(1024)
         if (res.get('messageType') == MessageType.SUBSCRIBER):
-            broker.add_client(Cliente( addr[0],
+            broker.add_client(Cliente( res.get('body').get('ip'),
                                        res.get('body').get('puerto') ,
                                        res.get('body').get('nombre'),
                                        res.get('body').get('residencia'),
@@ -32,16 +33,18 @@ def main():
                                        res.get('body').get('comp_familiar'),
                                        res.get('body').get('temas')
                                       )  )
-            hilo_difusion =  threading.Thread(target=broker.boadcast_brokers ,   args = (res,))
-            hilo_difusion.start()
+            if addr[0] == broker.balanceador_ip :
+                hilo_difusion =  threading.Thread(target=broker.boadcast_brokers ,   args = (res,))
+                hilo_difusion.start()
         elif (res.get('messageType') == MessageType.PUBLISHER):
-            broker.add_publisher(Publisher(addr[0],
+            broker.add_publisher(Publisher(res.get('body').get('ip'),
                                            res.get('body').get('nombre')
                                             ))
-            hilo_difusion =  threading.Thread(target=broker.boadcast_brokers ,   args = (res,))
-            hilo_difusion.start()
+            if addr[0] == broker.balanceador_ip :
+                hilo_difusion =  threading.Thread(target=broker.boadcast_brokers ,   args = (res,))
+                hilo_difusion.start()
         elif (res.get('messageType') == MessageType.BROKER):
-            if not broker.is_my_friend(addr[0]) :
+            if addr[0] == broker.balanceador_ip :
                 hilo_difusion =  threading.Thread(target=broker.boadcast_brokers ,   args = (res,))
                 hilo_difusion.start()
             broker.add_broker(Broker(res.get('body').get('ip'),
@@ -52,6 +55,11 @@ def main():
         elif (res.get('messageType') == MessageType.NEWS):
             hilo_match = threading.Thread(target=broker.broadcast_to_clients ,   args = (res,))
             hilo_match.start()
+
+        elif (res.get('messageType') == MessageType.GET_BROKERS):
+            hilo_addbro = threading.Thread(target=broker.add_new_brokers ,   args = (res,))
+            hilo_addbro.start()
+
     broker.conection.close_socket()
 
 main()
