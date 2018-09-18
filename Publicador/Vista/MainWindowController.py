@@ -13,6 +13,7 @@ from shared.NewsCategory import NewsCategory
 class MainWindowController:
     def __init__(self, mainWindow):
         self.mainWindow = mainWindow
+        self.publisher = None
 
     def connectPushButtonHandler(self):
         broker_data = self.mainWindow.getBrokerData()

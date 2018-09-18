@@ -123,8 +123,8 @@ class Ui_ClientMainWindow(object):
 
     def appendMessage(self, newMessage):
         print(newMessage)
-        #news = Noticia(json=newMessage.body)
-        self.newsFeedTextEdit.append(str(newMessage))
+        news = Noticia(json=newMessage.body)
+        self.newsFeedTextEdit.append(news.to_string())
 
 
     def retranslateUi(self, ClientMainWindow):
@@ -176,6 +176,7 @@ class GetNewsThread(QtCore.QThread):
     def __init__(self, listening_port, parent=None):
         QtCore.QThread.__init__(self, parent)
         self.conn = Connection('127.0.0.1', listening_port)
+        self.conn.init_server()
         self.BUFFER = 1024
     def run(self):
         while True:

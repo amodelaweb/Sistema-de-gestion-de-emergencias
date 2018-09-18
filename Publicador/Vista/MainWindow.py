@@ -144,11 +144,26 @@ class Ui_MainWindow(object):
             return fileName
         window.show()
 
+    def runThread(self):
+        path = self.getFilePath()
+        # Initialize Thread
+        self.thread = SendAutomaticMessages(path, self.controller.publisher)
+        self.thread.start()
 
     def makeButtonsConnections(self):
         self.connectPushButton.clicked.connect(self.controller.connectPushButtonHandler)
         self.sendPushButton.clicked.connect(self.controller.sendPushButtonHandler)
-        self.loadJsonPushButton.clicked.connect(self.controller.loadJsonPushButtonHandler)
+        self.loadJsonPushButton.clicked.connect(self.runThread)
+
+class SendAutomaticMessages(QtCore.QThread):
+    def __init__(self, path, publisher, parent=None):
+        QtCore.QThread.__init__(self, parent)
+        self.path = path
+        self.publisher = publisher
+    def run(self):
+        print('From Controller', self.path)
+        self.publisher.read_file(self.path)
+        self.publisher.send_packages_at_time()
 
 
 
