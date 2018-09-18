@@ -122,9 +122,10 @@ class Ui_ClientMainWindow(object):
 
 
     def appendMessage(self, newMessage):
-        print(newMessage)
-        news = Noticia(json=newMessage.body)
-        self.newsFeedTextEdit.append(news.to_string())
+        self.newsFeedTextEdit.append("Cuerpo: " + newMessage[0].get('body').get('body'))
+        self.newsFeedTextEdit.append("Autor: " + newMessage[0].get('body').get('author'))
+        self.newsFeedTextEdit.append("TimeStamp: " + newMessage[0].get('body').get('timestamp'))
+        self.newsFeedTextEdit.append("-------------------------------------------------")
 
 
     def retranslateUi(self, ClientMainWindow):
