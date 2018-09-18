@@ -66,4 +66,14 @@ class Broker(object):
         for pub in self.publishers :
             if pub.nombre == name:
                 return True
+            #fi
+        #rof
+        return False
+
+    def is_my_friend(self,  ip_broker):
+        for brok in self.brokers :
+            if brok.ip == ip_broker:
+                return True
+            #fi
+        #rof
         return False

@@ -41,8 +41,9 @@ def main():
             hilo_difusion =  threading.Thread(target=broker.boadcast_brokers ,   args = (res,))
             hilo_difusion.start()
         elif (res.get('messageType') == MessageType.BROKER):
-            hilo_difusion =  threading.Thread(target=broker.boadcast_brokers ,   args = (res,))
-            hilo_difusion.start()
+            if not broker.is_my_friend(addr[0]) :
+                hilo_difusion =  threading.Thread(target=broker.boadcast_brokers ,   args = (res,))
+                hilo_difusion.start()
             broker.add_broker(Broker(res.get('body').get('ip'),
                                      int(res.get('body').get('port')) ,
                                      True,
