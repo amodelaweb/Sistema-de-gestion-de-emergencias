@@ -1,5 +1,10 @@
 import json
+import os
+import sys
 import datetime
+
+sys.path.insert(1, os.path.join(sys.path[0], '../..'))
+from shared.NewsCategory import NewsCategory
 
 class Noticia:
     """A class that represents a news, this is the message that will be sent
@@ -21,3 +26,20 @@ class Noticia:
 
     def to_json(self):
         return json.dumps(self.__dict__)
+
+    def to_string(self):
+        author = 'Autor: ' + self.author
+        cuerpo = 'Noticia: ' + self.body
+        hora = 'Timestamp: ' +self.timestamp
+
+        temas = ''
+        for i in self.temas:
+            if i == NewsCategory.DERRUMBES:
+                temas += 'Derrumes '
+            if i == NewsCategory.INCENDIOS:
+                temas += 'Incedios '
+            if i == NewsCategory.INUNDACIONES:
+                temas += 'Inundaciones '
+            if i == NewsCategory.VENDAVALES:
+                temas += 'Vendabales '
+        return author + ' ' + cuerpo + ' ' + temas + ' ' + hora

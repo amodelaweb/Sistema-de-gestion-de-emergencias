@@ -15,6 +15,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 sys.path.insert(1, os.path.join(sys.path[0], '../..'))
 from Cliente.Vista.ClientMainViewController import ClientMainViewController
 from shared.Connection import Connection
+from shared.Noticia import Noticia
 
 class Ui_ClientMainWindow(object):
 
@@ -122,6 +123,7 @@ class Ui_ClientMainWindow(object):
 
     def appendMessage(self, newMessage):
         print(newMessage)
+        #news = Noticia(json=newMessage.body)
         self.newsFeedTextEdit.append(str(newMessage))
 
 
@@ -176,12 +178,9 @@ class GetNewsThread(QtCore.QThread):
         self.conn = Connection('127.0.0.1', listening_port)
         self.BUFFER = 1024
     def run(self):
-        i = 0
         while True:
-            #msg = self.conn.listen(self.BUFFER)
-            self.signal.emit(i)
-            i+=1
-            time.sleep(5)
+            msg = self.conn.listen(self.BUFFER)
+            self.signal.emit(msg)
 
 if __name__ == "__main__":
     import sys
