@@ -48,6 +48,7 @@ class Broker(object):
                 print(element)
                 if element in data.get('body').get('temas'):
                     self.conection.send_data(client.puerto, client.ip , data)
+                    return None
                     #break
                 #Fi
             #Rof
